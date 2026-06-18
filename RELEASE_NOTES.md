@@ -99,14 +99,6 @@ Compared with the GraphicsMagick version, this Pillow version:
 * Uses Pillow through Python package dependency management.
 * Is easier to install in typical ComfyUI environments.
 
-## Internal build
-
-* Internal build: `v2a`
-* Shared specification lineage: `v2a`
-* Backend: `pillow`
-
-This internal build number is shared with the GMImageSaver/PillowImageSaver specification lineage so that matching build numbers indicate matching user-facing specifications where possible.
-
 ## Compatibility
 
 This is the first public release.

@@ -189,14 +189,6 @@ VAE Decode / IMAGE
   └─ Pillow Image JPEG Save
 ```
 
-## Internal build lineage
-
-Public release version: `0.1.0`
-
-Internal specification build: `v2a`
-
-`v2a` is shared with the ImageSaver family specification used for GMImageSaver / PillowImageSaver sibling development.
-
 ## License
 
 GPL-3.0
