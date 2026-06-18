@@ -1,0 +1,17 @@
+[project]
+name = "pillow-image-saver"
+version = "0.1.0"
+description = "Pillow-based direct JPEG saver node for ComfyUI."
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "Pillow>=10.0.0",
+]
+
+[project.urls]
+Repository = "https://github.com/ruminar/ComfyUI-PillowImageSaver"
+
+[tool.comfy]
+PublisherId = "ruminar"
+DisplayName = "ComfyUI-PillowImageSaver"
+Icon = ""
