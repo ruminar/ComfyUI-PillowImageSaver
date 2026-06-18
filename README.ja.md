@@ -24,6 +24,9 @@ ComfyUI用の、Pillowを用いた画像保存ノード群じゃ。
 - `label` 入力ピンを用いた、ファイル・ディレクトリの柔軟な命名
 - 画像が保存されるごとに、ComfyUIのプログレスバーを更新
 
+<img width="431" height="364" alt="image" src="https://github.com/user-attachments/assets/c784580e-965d-4340-a9d0-fdf7441dacba" />
+
+
 PNGで保存したい時は、ComfyUI標準の Save Image ノードを使うのじゃ。
 
 ## 動作要件
@@ -177,14 +180,11 @@ VAE Decode / IMAGE
   └─ Pillow Image JPEG Save
 ```
 
-## 内部ビルド系譜
-
-公開バージョン: `0.1.0`
-
-内部仕様ビルド: `v2a`
-
-`v2a` は、GMImageSaver / PillowImageSaver 兄弟開発で共有する ImageSaver ファミリー仕様のビルド番号じゃ。
-
 ## ライセンス
 
 GPL-3.0
+
+## 宣伝画像
+
+<img width="1055" height="1491" alt="PillowImageSaver宣伝画像" src="https://github.com/user-attachments/assets/cc44d6c2-5dc1-4a1b-93fd-15def20e50e8" />
+
