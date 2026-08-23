@@ -227,6 +227,7 @@ def _build_filename_stem(
 
 def _next_counter(save_dir: str, stem: str) -> int:
     prefix = f"{stem}_"
+    prefix_casefold = prefix.casefold()
     max_counter = 0
     try:
         names = os.listdir(save_dir)
@@ -234,12 +235,13 @@ def _next_counter(save_dir: str, stem: str) -> int:
         return 1
 
     for name in names:
-        if not name.lower().endswith(JPEG_EXTENSION):
+        name_casefold = name.casefold()
+        if not name_casefold.endswith(JPEG_EXTENSION):
             continue
-        if not name.startswith(prefix):
+        if not name_casefold.startswith(prefix_casefold):
             continue
-        tail = name[len(prefix):-len(JPEG_EXTENSION)]
-        if len(tail) == 4 and tail.isdigit():
+        tail = name_casefold[len(prefix_casefold):-len(JPEG_EXTENSION)]
+        if tail.isdigit():
             max_counter = max(max_counter, int(tail))
     return max_counter + 1
 
@@ -270,8 +272,42 @@ def _normalize_comment(comment: Optional[str]) -> Optional[bytes]:
         return None
     encoded = text.encode("utf-8")
     if len(encoded) > MAX_JPEG_COMMENT_BYTES:
-        encoded = encoded[:MAX_JPEG_COMMENT_BYTES]
+        encoded = (
+            encoded[:MAX_JPEG_COMMENT_BYTES]
+            .decode("utf-8", errors="ignore")
+            .encode("utf-8")
+        )
     return encoded
+
+
+def _save_jpeg_exclusive(
+    pil_image: Image.Image,
+    save_dir: str,
+    stem: str,
+    counter: int,
+    save_kwargs: dict,
+) -> int:
+    while True:
+        filename = f"{stem}_{counter:04}.jpg"
+        out_path = os.path.join(save_dir, filename)
+
+        try:
+            file_handle = open(out_path, "xb")
+        except FileExistsError:
+            counter += 1
+            continue
+
+        try:
+            with file_handle:
+                pil_image.save(file_handle, **save_kwargs)
+        except BaseException:
+            try:
+                os.remove(out_path)
+            except OSError:
+                pass
+            raise
+
+        return counter
 
 
 class PillowImageJpegSave:
@@ -329,9 +365,6 @@ class PillowImageJpegSave:
         pbar = _make_progress_bar(len(images))
 
         for image in images:
-            filename = f"{stem}_{counter:04}.jpg"
-            out_path = os.path.join(save_dir, filename)
-
             rgb_array, _w, _h = _tensor_to_rgb_array_and_size(image)
             pil_image = Image.fromarray(rgb_array)
 
@@ -345,9 +378,17 @@ class PillowImageJpegSave:
                 save_kwargs["comment"] = comment_bytes
 
             try:
-                pil_image.save(out_path, **save_kwargs)
+                counter = _save_jpeg_exclusive(
+                    pil_image,
+                    save_dir,
+                    stem,
+                    counter,
+                    save_kwargs,
+                )
             except OSError as exc:
-                raise RuntimeError(f"Pillow failed while saving '{out_path}'.") from exc
+                raise RuntimeError(
+                    f"Pillow failed while saving a JPEG in '{save_dir}'."
+                ) from exc
 
             counter += 1
             pbar.update(1)
