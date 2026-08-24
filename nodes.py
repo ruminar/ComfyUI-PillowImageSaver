@@ -1,3 +1,4 @@
+import ntpath
 import os
 import re
 from datetime import datetime
@@ -127,6 +128,11 @@ def _relative_path_has_parent_reference(path_text: str) -> bool:
     return any(part == ".." for part in parts)
 
 
+def _is_windows_drive_relative_path(path_text: str) -> bool:
+    drive, _tail = ntpath.splitdrive(path_text)
+    return bool(drive) and not ntpath.isabs(path_text)
+
+
 def _resolve_base_output_dir(output_dir: Optional[str]) -> str:
     if output_dir is None:
         return _get_comfy_output_directory()
@@ -134,6 +140,12 @@ def _resolve_base_output_dir(output_dir: Optional[str]) -> str:
     raw = str(output_dir).strip()
     if not raw:
         return _get_comfy_output_directory()
+
+    if _is_windows_drive_relative_path(raw):
+        raise RuntimeError(
+            "Drive-relative output_dir paths such as 'C:foo' are not supported. "
+            "Use an absolute path such as 'C:\\foo'."
+        )
 
     if os.path.isabs(raw):
         return os.path.normpath(raw)

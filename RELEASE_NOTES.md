@@ -1,6 +1,6 @@
 # Release Notes
 
-## v0.1.0 - Initial release
+## 0.1.0 - Initial release
 
 Initial public release of **ComfyUI-PillowImageSaver**.
 

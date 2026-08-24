@@ -56,6 +56,8 @@ If `output_dir` is a relative path, it is resolved under ComfyUI's standard outp
 
 If `output_dir` is an absolute path, it is used as-is.
 
+Windows drive-relative paths such as `C:foo` are rejected. Use an absolute path such as `C:\foo` instead.
+
 ## Directory patterns
 
 `directory_pattern` controls folders under `output_dir`.

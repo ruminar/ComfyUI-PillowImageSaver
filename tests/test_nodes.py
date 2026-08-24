@@ -41,6 +41,21 @@ class CounterTests(unittest.TestCase):
             self.assertEqual(nodes._next_counter(temp_dir, "cat"), 2)
 
 
+class OutputDirectoryTests(unittest.TestCase):
+    def test_windows_drive_relative_path_is_rejected(self):
+        for path_text in ("C:foo", "c:foo", "C:"):
+            with self.subTest(path_text=path_text):
+                with self.assertRaisesRegex(RuntimeError, "Drive-relative output_dir"):
+                    nodes._resolve_base_output_dir(path_text)
+
+    def test_windows_absolute_path_is_not_drive_relative(self):
+        self.assertFalse(nodes._is_windows_drive_relative_path(r"C:\foo"))
+        self.assertFalse(nodes._is_windows_drive_relative_path("C:/foo"))
+
+    def test_path_without_drive_is_not_drive_relative(self):
+        self.assertFalse(nodes._is_windows_drive_relative_path("foo/bar"))
+
+
 class CommentTests(unittest.TestCase):
     def test_long_multibyte_comment_remains_valid_utf8(self):
         normalized = nodes._normalize_comment("祭" * 30000)
