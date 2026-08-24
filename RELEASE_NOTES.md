@@ -1,6 +1,27 @@
 # Release Notes
 
-## v0.1.0 - Initial release
+## 0.1.1 - Safer JPEG output
+
+This maintenance release improves filename collision handling, output path safety, and JPEG comment integrity.
+
+### Fixed
+
+* Continues filename numbering correctly beyond four digits, preventing an existing `image_10000.jpg` from being overwritten after the counter passes `9999`.
+* Matches existing filename stems case-insensitively, preventing case-only names such as `Cat_0001.jpg` and `cat_0001.jpg` from colliding on Windows.
+* Creates output files exclusively and retries with the next counter when a filename already exists. This protects existing files when multiple processes or external tools use the same output directory.
+* Removes incomplete output files when Pillow fails during a save operation, without hiding the original save error.
+* Truncates oversized JPEG comments only at valid UTF-8 character boundaries.
+* Rejects Windows drive-relative `output_dir` values such as `C:foo`, which do not resolve beneath ComfyUI's output directory. Use an absolute path such as `C:\foo` instead.
+
+### Tests
+
+* Adds regression coverage for five-digit counters, case-insensitive filename matching, exclusive file creation, incomplete-file cleanup, UTF-8 comment truncation, and Windows drive-relative path rejection.
+
+### Compatibility
+
+No workflow migration is required. Node inputs, defaults, and directory patterns are unchanged.
+
+## 0.1.0 - Initial release
 
 Initial public release of **ComfyUI-PillowImageSaver**.
 
