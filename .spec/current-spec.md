@@ -1,7 +1,5 @@
 # ImageSaver family shared specification
 
-Internal specification build: `v2a`
-
 Projects:
 
 - ComfyUI-GMImageSaver

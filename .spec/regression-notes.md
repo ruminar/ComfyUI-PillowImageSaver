@@ -1,7 +1,5 @@
 # Regression notes
 
-Internal specification build: `v2a`
-
 Important points to preserve:
 
 - Do not add output pins to the saver node.

@@ -1,7 +1,5 @@
 # Backend differences
 
-Internal specification build: `v2a`
-
 ## GMImageSaver
 
 - Backend: GraphicsMagick CLI

@@ -1,6 +1,6 @@
 [project]
 name = "pillow-image-saver"
-version = "0.1.0"
+version = "0.1.1"
 description = "Pillow-based direct JPEG saver node for ComfyUI. Recommended image output node for HandpickerSuite."
 license = { file = "LICENSE" }
 requires-python = ">=3.10"

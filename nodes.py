@@ -18,8 +18,7 @@ except Exception:  # pragma: no cover - ComfyUI provides this module at runtime
     ProgressBar = None
 
 
-TOOL_VERSION = "0.1.0"
-TOOL_BUILD = "v2a"
+TOOL_VERSION = "0.1.1"
 BACKEND = "pillow"
 
 DIRECTORY_PATTERNS = [
